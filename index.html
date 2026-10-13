@@ -37,56 +37,56 @@
     font-size: 18px;
     line-height: 1.65;
   }
-  main {
-    max-width: 700px;
+
+  /* Two-column layout: sidebar + content */
+  .page {
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 56px 20px 48px;
+    padding: 64px 40px 48px;
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 64px;
   }
 
-  /* Header */
-  header {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    margin-bottom: 20px;
+  /* Sidebar */
+  aside {
+    position: sticky;
+    top: 48px;
+    align-self: start;
   }
-  header img {
-    width: 116px;
-    height: 116px;
-    border-radius: 50%;
+  aside img {
+    display: block;
+    width: 210px;
+    aspect-ratio: 7 / 9;   /* ID-photo proportions */
     object-fit: cover;
-    flex-shrink: 0;
+    border-radius: 4px;
+    margin-bottom: 22px;
   }
   h1 {
-    font-size: 2rem;
+    font-size: 1.7rem;
     line-height: 1.2;
-    margin: 0 0 4px;
+    margin: 0 0 8px;
     font-weight: normal;
   }
-  .tagline { margin: 0 0 8px; color: var(--muted); font-size: 1rem; }
-  .links { font-family: var(--sans); font-size: 0.9rem; }
+  .tagline { margin: 0 0 14px; color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+  .links { font-family: var(--sans); font-size: 0.9rem; margin-bottom: 24px; }
   .links a { margin-right: 16px; white-space: nowrap; }
 
-  /* Index */
   nav {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bg);
-    border-bottom: 1px solid var(--line);
-    margin: 0 -20px 8px;
-    padding: 10px 20px;
     font-family: var(--sans);
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     display: flex;
-    flex-wrap: wrap;
-    gap: 4px 20px;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
   }
   nav a { color: var(--muted); }
   nav a:hover { color: var(--accent); text-decoration: none; }
 
-  /* Sections */
-  section { scroll-margin-top: 56px; }
+  /* Content */
+  .content { max-width: 740px; }
+  section { scroll-margin-top: 32px; }
   h2 {
     font-family: var(--sans);
     font-size: 0.8rem;
@@ -98,13 +98,7 @@
     padding-bottom: 6px;
     border-bottom: 1px solid var(--line);
   }
-  h3 {
-    font-family: var(--sans);
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin: 0 0 8px;
-    color: var(--accent);
-  }
+  section:first-child h2 { margin-top: 0; }
   p { margin: 0 0 16px; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; }
@@ -133,119 +127,130 @@
     font-size: 0.85rem;
     font-family: var(--sans);
   }
-  @media (max-width: 520px) {
-    main { padding-top: 36px; }
-    header { flex-direction: column; align-items: flex-start; gap: 14px; }
+
+  /* Tablets and phones: stack the sidebar on top */
+  @media (max-width: 860px) {
+    .page { grid-template-columns: 1fr; gap: 8px; padding: 40px 20px 40px; }
+    aside { position: static; }
+    aside img { width: 160px; }
+    nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 4px 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+    section:first-child h2 { margin-top: 32px; }
   }
 </style>
 </head>
 
 <body>
-<main>
+<div class="page">
 
-  <header>
-    <!-- EDIT: upload a square photo named photo.jpg next to this file. -->
+  <aside>
+    <!-- Photo: photo.jpg next to this file; it is cropped to ID-photo shape. -->
     <img src="photo.jpg" alt="Portrait of Guillermo Benito Calviño" onerror="this.remove()">
-    <div>
-      <h1>Guillermo Benito Calviño</h1>
-      <p class="tagline">Physicist · PhD student in the AGORA team, CITI Lab (Inria &amp; INSA Lyon)</p>
-      <p class="links">
-        <a href="mailto:guillermo.benito-calvino@inria.fr">Email</a>
-        <a href="cv.pdf">CV</a>
-        <!-- EDIT: e.g. <a href="URL">Google Scholar</a> -->
+    <h1>Guillermo Benito Calviño</h1>
+    <p class="tagline">Physicist · PhD student in the AGORA team, CITI Lab (Inria &amp; INSA Lyon)</p>
+    <p class="links">
+      <a href="mailto:guillermo.benito-calvino@inria.fr">Email</a>
+      <a href="cv.pdf">CV</a>
+      <!-- EDIT: e.g. <a href="URL">Google Scholar</a> -->
+    </p>
+    <nav>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#education">Education</a>
+      <a href="#about">About me</a>
+    </nav>
+  </aside>
+
+  <main class="content">
+
+    <section id="research">
+      <h2>Research</h2>
+      <p class="lead">
+        A turbulent plume is not a smooth cloud: it meanders, breaks into
+        filaments and reaches a sensor only in intermittent bursts. My research
+        tackles the inverse problem of this stochastic transport: locating the
+        source of a passive scalar from sparse, noisy and mostly empty
+        observations. My PhD is built around four questions:
       </p>
-    </div>
-  </header>
+      <ul class="questions">
+        <li>How can we infer the source of a passive scalar from binary detection events?</li>
+        <li>Which spatial and temporal correlations shape the statistics of plume detection?</li>
+        <li>How can cooperating agents use information theory to search efficiently?</li>
+        <li>Can gas sensing improve other localization modalities, such as radio frequency?</li>
+      </ul>
+      <p class="meta">
+        The application is finding victims in search and rescue missions with
+        teams of drones. Supervised by Ahmed Boubrima and Hervé Rivano.
+      </p>
+    </section>
 
-  <nav>
-    <a href="#research">Research</a>
-    <a href="#publications">Publications</a>
-    <a href="#teaching">Teaching</a>
-    <a href="#education">Education</a>
-    <a href="#about">About me</a>
-  </nav>
+    <section id="publications">
+      <h2>Publications</h2>
+      <ul class="plain">
+        <li>
+          <strong>G. Benito-Calviño</strong>, P. Jensen.
+          <a href="https://hal.science/hal-05676666/document">ORION: Olfactory and RF Multimodal Sensing for UAV-Based Localization of Disaster Victims</a>.
+          <em>DCOSS-IoT</em>, Reykjavik, <span class="year">2026</span>.
+        </li>
+        <li>
+          <strong>G. Benito-Calviño</strong>, P. Jensen.
+          <a href="https://inria.hal.science/hal-04993734/document">Simple model for the transition from local to centralized production</a>.
+          <em>Physical Review E</em> 111, <span class="year">2025</span>.
+        </li>
+        <li>
+          <strong>G. Benito-Calviño</strong>, J. García-Olivares, F. J. Llanes-Estrada.
+          <a href="https://www.sciencedirect.com/science/article/pii/S0375947423000738">Information entropy and fragmentation functions</a>.
+          <em>Nuclear Physics A</em> 1036, <span class="year">2023</span>.
+        </li>
+      </ul>
+    </section>
 
-  <section id="research">
-    <h2>Research</h2>
-    <p class="lead">
-      A turbulent plume is not a smooth cloud: it meanders, breaks into
-      filaments and reaches a sensor only in intermittent bursts. My research
-      tackles the inverse problem of this stochastic transport: locating the
-      source of a passive scalar from sparse, noisy and mostly empty
-      observations. My PhD is built around four questions:
-    </p>
-    <ul class="questions">
-      <li>How can we infer the source of a passive scalar from binary detection events?</li>
-      <li>Which spatial and temporal correlations shape the statistics of plume detection?</li>
-      <li>How can cooperating agents use information theory to search efficiently?</li>
-      <li>Can gas sensing improve other localization modalities, such as radio frequency?</li>
-    </ul>
-    <p class="meta">
-      The application is finding victims in search and rescue missions with
-      teams of drones. Supervised by Ahmed Boubrima and Hervé Rivano.
-    </p>
-  </section>
+    <section id="teaching">
+      <h2>Teaching</h2>
+      <p class="meta">INSA Lyon, Department of Biosciences (Biotechnology &amp; Bioinformatics), 3rd-year students</p>
+      <!-- EDIT: add the academic year(s), e.g. <span class="year">2025–26</span> · -->
+      <ul class="plain">
+        <li>Mathematical modelling of living systems · <span class="year">40 h</span></li>
+        <li>Linear algebra · <span class="year">20 h</span></li>
+      </ul>
+    </section>
 
-  <section id="publications">
-    <h2>Publications</h2>
-    <ul class="plain">
-      <li>
-        <strong>G. Benito-Calviño</strong>, P. Jensen.
-        <a href="https://hal.science/hal-05676666/document">ORION: Olfactory and RF Multimodal Sensing for UAV-Based Localization of Disaster Victims</a>.
-        <em>DCOSS-IoT</em>, Reykjavik, <span class="year">2026</span>.
-      </li>
-      <li>
-        <strong>G. Benito-Calviño</strong>, P. Jensen.
-        <a href="https://inria.hal.science/hal-04993734/document">Simple model for the transition from local to centralized production</a>.
-        <em>Physical Review E</em> 111, <span class="year">2025</span>.
-      </li>
-      <li>
-        <strong>G. Benito-Calviño</strong>, J. García-Olivares, F. J. Llanes-Estrada.
-        <a href="https://www.sciencedirect.com/science/article/pii/S0375947423000738">Information entropy and fragmentation functions</a>.
-        <em>Nuclear Physics A</em> 1036, <span class="year">2023</span>.
-      </li>
-    </ul>
-  </section>
+    <section id="education">
+      <h2>Education</h2>
+      <ul class="plain">
+        <li><span class="year">2024 – now</span> · PhD in Computer Science, Inria &amp; INSA Lyon</li>
+        <li><span class="year">2022 – 2024</span> · MSc in Physics of Data (complex systems), University of Padova</li>
+        <li><span class="year">2018 – 2022</span> · BSc in Physics (Theoretical Physics), Universidad Complutense de Madrid</li>
+      </ul>
+    </section>
 
-  <section id="teaching">
-    <h2>Teaching</h2>
-    <p class="meta">INSA Lyon, Department of Biosciences (Biotechnology &amp; Bioinformatics), 3rd-year students</p>
-    <!-- EDIT: add the academic year(s), e.g. <span class="year">2025–26</span> · -->
-    <ul class="plain">
-      <li>Mathematical modelling of living systems · <span class="year">40 h</span></li>
-      <li>Linear algebra · <span class="year">20 h</span></li>
-    </ul>
-  </section>
+    <section id="about">
+      <h2>About me</h2>
+      <p>
+        My degree in Madrid showed me the limits of our understanding of nature;
+        my master's in Padova revealed new frontiers where the same approaches can
+        help us push those limits further. Since then I've been drawn to complex
+        systems and the stochastic modelling of natural phenomena, and I'm always
+        up for a new interdisciplinary challenge.
+      </p>
+      <p>
+        Happy to chat anytime. If you can't reach me, hopefully it's because I'm
+        in the mountains ;)
+      </p>
+    </section>
 
-  <section id="education">
-    <h2>Education</h2>
-    <ul class="plain">
-      <li><span class="year">2024 – now</span> · PhD in Computer Science, Inria &amp; INSA Lyon</li>
-      <li><span class="year">2022 – 2024</span> · MSc in Physics of Data (complex systems), University of Padova</li>
-      <li><span class="year">2018 – 2022</span> · BSc in Physics (Theoretical Physics), Universidad Complutense de Madrid</li>
-    </ul>
-  </section>
+    <footer>
+      Lyon, France · Last updated October 2026.
+    </footer>
 
-  <section id="about">
-    <h2>About me</h2>
-    <p>
-      My degree in Madrid showed me the limits of our understanding of nature;
-      my master's in Padova revealed new frontiers where the same approaches can
-      help us push those limits further. Since then I've been drawn to complex
-      systems and the stochastic modelling of natural phenomena, and I'm always
-      up for a new interdisciplinary challenge.
-    </p>
-    <p>
-      Happy to chat anytime. If you can't reach me, hopefully it's because I'm
-      in the mountains ;)
-    </p>
-  </section>
+  </main>
 
-  <footer>
-    Lyon, France · Last updated October 2026.
-  </footer>
-
-</main>
+</div>
 </body>
-</html>
 </html>
